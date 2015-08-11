@@ -1,0 +1,28 @@
+#map-canvas {
+	width: 99%;
+	height: 760px;
+}
+
+h1 {
+    color: navy;
+    margin-left: 20px;
+    text-align: center;
+}
+
+#sliderAndDate {
+    text-align: center;
+}
+
+#container {
+    width:100%;
+    text-align:center;
+}
+
+
+
+#right-nav-links {
+    float:right;
+    text-align: right;
+    width:40%;
+    height: 25px;
+}
