@@ -10,7 +10,23 @@ function updateMap(matchday) {
 		home_team_code = game[0]
 		away_team_code = game[1]
 
-		putTeamOnMap(home_team_code)
+		var marker = putTeamOnMap(home_team_code)
+		addIconToMarker(marker, home_team_code, away_team_code)
+	}
+}
+
+function addIconToMarker(marker, home_team_code, away_team_code) {
+	path = getPathToTeam(home_team_code, true) // TODO - this should be small
+	marker.setIcon(path)
+}
+
+// size_large is boolean, by default true
+function getPathToTeam(team_code, size_large) {
+	base = "images/team_icons/" + team_code
+	if (size_large) {
+		return base + ".png"
+	} else {
+		return base + "_small.png"
 	}
 }
 
