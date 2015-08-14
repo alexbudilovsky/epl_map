@@ -71,6 +71,7 @@ def print_formatted_team_names_and_codes():
 def print_full_schedule():
 	print('var full_schedule_by_matchday = {}')
 
+	print('// home team listed first')
 	for matchday in full_schedule:
 		print('full_schedule_by_matchday[\'{0}\'] = {1}'.format(matchday, full_schedule[matchday]))
 
