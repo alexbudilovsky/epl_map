@@ -1,0 +1,36 @@
+epl schedule
+first day week 1: Sat Aug 8
+Last day week 38: May 15, 2016
+
+total days, inclusive: 282 days
+
+api key for football-api.com: 82b2758d-49b1-8069-d7d7f5641798
+premier league - 1204
+
+
+premier league
+http://api.football-data.org/alpha/soccerseasons/398
+
+
+all teams
+
+Leicester - LEI
+Crystal Palace - CRY
+West Ham - WHU
+Aston Villa - AVL
+Liverpool - LIV
+Man U - MUN
+Everton - EVE
+Swansea - SWA
+Watford - WAT
+Chelsea - CHE
+Southampton - SOU
+Newcastle United - NEW
+Tottenham - TOT
+Bournemouth - BOU
+Stoke - STK
+Sunderland - SUN
+Norwich - NOR
+Arsenal - ARS
+Man City - MCI
+West Bromwich Albion - WBA

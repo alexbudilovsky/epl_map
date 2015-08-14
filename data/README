@@ -1,0 +1,7 @@
+Credits for the following files
+stadiums-with-GPS-coordinates.csv - https://github.com/jokecamp/FootballData/blob/master/stadiums-with-GPS-coordinates.csv
+Notes:
+Sunderland added 'A' to end to match with 'AFC' from football-data.org api
+AFC Bournemouth not in list, added in generate_schedule.py
+
+http://api.football-data.org/alpha/soccerseasons/398/teams -> all teams for 15/16 EPL season

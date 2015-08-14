@@ -10,10 +10,11 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?"></script>
     <script type="text/javascript" src="jquery-1.11.3.min.js"></script>
     <script type="text/javascript">
-        var latLng = new google.maps.LatLng(38.5, -97.35);
+        var latLng = new google.maps.LatLng(54.78, -3);
+        var zoomLevel = 6;
         var mapOptions = {
           center: latLng,
-          zoom: 5,
+          zoom: zoomLevel,
           panControl:false,
           zoomControl:true,
           streetViewControl:false,
@@ -80,13 +81,12 @@
 
         google.maps.event.addDomListener(controlUI, 'click', function() {
           map.setCenter(latLng)
-          map.setZoom(5)
+          map.setZoom(zoomLevel)
         });
 
         google.maps.event.addDomListener(todayUI, 'click', function() {
           setSliderToCurrentDay()
         });
-
       }
 
       function initialize() {
@@ -107,17 +107,16 @@
     </script>
   </head>
   <body>
-      <div id="sliderAndDate">
-   
     <br>
-  </div>
   <div id="container">
       <div id="right-nav-links">
     <a href="index.html">Home Page</a> | <a href="https://github.com/alexbudilovsky/epl_map" target="_blank">GitHub</a>
-      </div>
+    <br><br><br>
+    <div id="sliderAndDate">
+      <input type="range" id="weight" min="0" value="0" max="148" step="1" class="slider">
+    </div>
   </div>
 	<div id="map-canvas"></div>
 	<br>
-
   </body>
 </html>
