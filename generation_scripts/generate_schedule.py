@@ -73,7 +73,7 @@ def print_full_schedule():
 
 	print('// home team listed first')
 	for matchday in full_schedule:
-		print('full_schedule_by_matchday[\'{0}\'] = {1}'.format(matchday, full_schedule[matchday]))
+		print('full_schedule_by_matchday[{0}] = {1}'.format(matchday, full_schedule[matchday]))
 
 # team code to lat lng location
 def print_team_locations():
