@@ -1,3 +1,8 @@
+// constants definitions here
+var firstWeek = 1
+var lastWeek = 38
+var sliderId = "matchdaySlider"
+// end constant definitions
 
 // displays all teams for a given matchday
 function updateMap(matchday) {
@@ -15,8 +20,33 @@ function updateMap(matchday) {
 	}
 }
 
+function moveSliderLeft() {
+	currentMatchday = getSliderValue()
+	if (currentMatchday > firstWeek) {
+		currentMatchday--
+		moveSlider(currentMatchday)
+	}
+}
+
+function moveSliderRight() {
+	currentMatchday = getSliderValue()
+	if (currentMatchday < lastWeek) {
+		currentMatchday++;
+		moveSlider(currentMatchday)
+	}
+}
+
+function moveSlider(matchday) {
+	document.getElementById(sliderId).value = matchday;
+	updateMap(matchday)
+}
+
+function getSliderValue() {
+    return parseInt(document.getElementById(sliderId).value)
+}
+
 function addIconToMarker(marker, home_team_code, away_team_code) {
-	path = getPathToTeam(home_team_code, true) // TODO - this should be small
+	path = getPathToTeam(home_team_code, false)
 	marker.setIcon(path)
 }
 
