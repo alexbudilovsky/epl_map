@@ -14,17 +14,16 @@
     <script type="text/javascript" src="map_functions.js"></script>
     <script type="text/javascript" src="load_scores.js"></script>
   </head>
-  <body onload="updateMap(1)">
+  <body onload="updateMap(1); loadScoresForSliderMatchday()"> 
     <br>
   <div id="container">
       <div id="right-nav-links">
     <a href="index.html">Home Page</a> | <a href="https://github.com/alexbudilovsky/epl_map" target="_blank">GitHub</a>
     <br><br><br>
     <div id="sliderAndDate">
-      <button type="button" onClick="moveSliderLeft()">&#9668;</button>
-      <input type="range" id="matchdaySlider" min="1" value="1" max="38" step="1" class="slider" onchange="updateMap(this.value)"
-      oninput="updateMap(this.value)">
-      <button type="button" onClick="moveSliderRight()">&#9658;</button>
+      <button type="button" onClick="moveSliderLeft(); loadScoresForSliderMatchday()">&#9668;</button>
+      <input type="range" id="matchdaySlider" min="1" value="1" max="38" step="1" class="slider" onchange="updateMap(this.value)" oninput="updateMap(this.value)">
+      <button type="button" onClick="moveSliderRight(); loadScoresForSliderMatchday()">&#9658;</button>
     </div>
   </div>
 	<div id="map-canvas"></div>

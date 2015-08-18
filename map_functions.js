@@ -4,6 +4,8 @@ var lastWeek = 38
 var sliderId = "matchdaySlider"
 // end constant definitions
 
+team_code_to_marker = {} // current markers displayed - key is team code
+
 // displays all teams for a given matchday
 function updateMap(matchday) {
 	deleteMarkers()
@@ -15,9 +17,14 @@ function updateMap(matchday) {
 		home_team_code = game[0]
 		away_team_code = game[1]
 
-		var marker = putTeamOnMap(home_team_code)
-		addIconToMarker(marker, home_team_code, away_team_code)
+		putTeamOnMap(home_team_code)
+		addIconToMarker(home_team_code, away_team_code)
 	}
+}
+
+// this function will read scores from a static file, not an api call (http://api.football-data.org/ requires an API key for ajax)
+function loadScoresForSliderMatchday() {
+
 }
 
 function moveSliderLeft() {
@@ -45,12 +52,12 @@ function getSliderValue() {
     return parseInt(document.getElementById(sliderId).value)
 }
 
-function addIconToMarker(marker, home_team_code, away_team_code) {
-	path = getPathToTeam(home_team_code, false)
-	marker.setIcon(path)
+// todo this will need to be in load_scores
+function addIconToMarker(home_team_code, away_team_code) {
+
 }
 
-// size_large is boolean, by default true
+// size_large is boolean, by default needs to be false - small
 function getPathToTeam(team_code, size_large) {
 	base = "images/team_icons/" + team_code
 	if (size_large) {
@@ -63,8 +70,6 @@ function getPathToTeam(team_code, size_large) {
 ////////////////////////////////
 // Google Map Functions Below //
 ////////////////////////////////
-
-markers = []
 function putTeamOnMap(team_code) {
     var loc = team_code_to_locations[team_code]
 
@@ -73,27 +78,37 @@ function putTeamOnMap(team_code) {
 
     var latLng = new google.maps.LatLng(lat, lng);
 
-    return addMarker(latLng, team_code)
+    addMarker(latLng, team_code)
 }
 
 // Add a marker to the map and push to the array.
 // add info window if releasing slider
 function addMarker(location, team_code) {
+  var smallIconPath = getPathToTeam(home_team_code, false)
+  var largeIconPath = getPathToTeam(home_team_code, true)
   var marker = new google.maps.Marker({
     position: location,
     map: map,
-    title: team_code_and_name[team_code]
+    title: team_code_and_name[team_code],
+    icon: smallIconPath
   });
   marker.clicked = false
 
-  markers.push(marker);
-  return marker
+  google.maps.event.addListener(marker, 'mouseover', function() {
+	this.setIcon(largeIconPath)
+  });
+
+  google.maps.event.addListener(marker, 'mouseout', function() {
+	this.setIcon(smallIconPath)
+  });
+
+  team_code_to_marker[team_code] = marker
 }
 
 // Sets the map on all markers in the array.
 function setAllMap(passedMap) {
-  for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(passedMap);
+  for (var key in team_code_to_marker) {
+    team_code_to_marker[key].setMap(passedMap);
   }
 }
 
@@ -110,5 +125,5 @@ function showMarkers() {
 // Deletes all markers in the array by removing references to them.
 function deleteMarkers() {
   clearMarkers();
-  markers = [];
+  team_code_to_marker = {}
 }
