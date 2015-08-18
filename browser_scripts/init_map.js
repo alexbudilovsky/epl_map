@@ -1,7 +1,14 @@
-        var latLng = new google.maps.LatLng(53.5, -3.5);
+        var bounds = new google.maps.LatLngBounds();
+        for (key in team_code_to_locations) {
+          var lat = team_code_to_locations[key][0]
+          var lng = team_code_to_locations[key][1]
+          bounds.extend(new google.maps.LatLng(lat, lng))
+        };
+        var mapCenter = bounds.getCenter()
+
         var zoomLevel = 6;
         var mapOptions = {
-          center: latLng,
+          center: mapCenter,
           zoom: zoomLevel,
           panControl:false,
           zoomControl:true,
@@ -68,7 +75,7 @@
         todayUI.appendChild(todayText);
 
         google.maps.event.addDomListener(controlUI, 'click', function() {
-          map.setCenter(latLng)
+          map.setCenter(mapCenter)
           map.setZoom(zoomLevel)
         });
 
@@ -79,8 +86,7 @@
 
       function initialize() {
 
-        map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
         // Create the DIV to hold the control and
         // call the CenterControl() constructor passing
@@ -91,4 +97,5 @@
         centerControlDiv.index = 1;
         map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(centerControlDiv);
       }
+
       google.maps.event.addDomListener(window, 'load', initialize);

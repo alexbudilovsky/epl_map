@@ -18,13 +18,7 @@ function updateMap(matchday) {
 		away_team_code = game[1]
 
 		putTeamOnMap(home_team_code)
-		addIconToMarker(home_team_code, away_team_code)
 	}
-}
-
-// this function will read scores from a static file, not an api call (http://api.football-data.org/ requires an API key for ajax)
-function loadScoresForSliderMatchday() {
-
 }
 
 function moveSliderLeft() {
@@ -50,11 +44,6 @@ function moveSlider(matchday) {
 
 function getSliderValue() {
     return parseInt(document.getElementById(sliderId).value)
-}
-
-// todo this will need to be in load_scores
-function addIconToMarker(home_team_code, away_team_code) {
-
 }
 
 // size_large is boolean, by default needs to be false - small
@@ -94,12 +83,25 @@ function addMarker(location, team_code) {
   });
   marker.clicked = false
 
+  // these listeners only deal with icon size.  load_score.js will deal with only infoWindows
   google.maps.event.addListener(marker, 'mouseover', function() {
-	this.setIcon(largeIconPath)
-  });
+	if (this.getIcon() != largeIconPath) {
+		this.setIcon(largeIconPath)
+	} });
 
   google.maps.event.addListener(marker, 'mouseout', function() {
-	this.setIcon(smallIconPath)
+	if (!this.clicked) {
+		this.setIcon(smallIconPath)
+	} });
+
+  google.maps.event.addListener(marker, 'click', function() {
+  	this.clicked = !this.clicked;
+
+  	if (this.clicked) {
+  		this.setIcon(largeIconPath)	
+  	} else {
+  		this.setIcon(smallIconPath)
+  	}
   });
 
   team_code_to_marker[team_code] = marker
