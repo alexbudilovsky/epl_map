@@ -70,10 +70,12 @@ function getGameHtml(team_pair, score_pair, date, status) {
 
 	gameStatus = (status == "FINISHED" ? "FT" : "")
 
-	var html = "<table>"
-	html += "<tr><td colspan=\"2\">" + date + "</td> <td></td> </tr>"
-	html += "<tr><td>" + team_pair[0] + "</td> <td><b>" + homeScoreToShow + "</b></td> <td rowspan=\"2\">" + gameStatus + "</td></tr>"
-	html += "<tr><td>" + team_pair[1] + "</td> <td><b>" + awayScoreToShow + "</b></td> </tr>"
+	var html = "<table class=\"score_table\">"
+	html += "<tr><td class=\"game_date\" colspan=\"2\">" + date + "</td> <td></td> </tr>"
+	html += "<tr><td class=\"team_cell\">" + team_pair[0] + "</td> <td class=\"team_score\"><b>" 
+		+ homeScoreToShow + "</b></td> <td class=\"game_status\" rowspan=\"2\">" + gameStatus + "</td></tr>"
+	html += "<tr><td class=\"team_cell\">" + team_pair[1] + "</td> <td class=\"team_score\"><b>" 
+		+ awayScoreToShow + "</b></td> </tr>"
 	html += "</table>"
 
 	return html
