@@ -21,7 +21,6 @@ function updateMap(matchday) {
 	}
 }
 
-
 function moveSliderLeft() {
 	currentMatchday = getSliderValue()
 	if (currentMatchday > firstWeek) {
@@ -49,11 +48,27 @@ function getSliderValue() {
 
 // returns both large and small icons (svg-scaled) 
 function getIconsForTeam(team_code) {
+    var sizes = getIconSizesForTeam(team_code)
+
     teamSVGPath = "images/team_icons_svg/" + team_code + ".svg"
-    largeIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, new google.maps.Size(80,80))
-    smallIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, new google.maps.Size(60,60))
+    smallIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, sizes[0])
+    largeIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, sizes[1])
 
     return [largeIcon, smallIcon]
+}
+//return [smallIcon, largeIcon], scaled properly
+function getIconSizesForTeam(team_code) {
+    origSVGSize = team_crest_svg_size[team_code] // [width, height]
+
+    smallHeight = 60 //scaled with heigth as constant
+    largeHeight = 80
+    smallWidth = origSVGSize[0] * (smallHeight/origSVGSize[1])
+    largeWidth = origSVGSize[0] * (largeHeight/origSVGSize[1])
+
+    smallSize = new google.maps.Size(smallWidth, smallHeight) // width, height
+    largeSize = new google.maps.Size(largeWidth, largeHeight)
+
+    return [smallSize, largeSize]  
 }
 
 ////////////////////////////////

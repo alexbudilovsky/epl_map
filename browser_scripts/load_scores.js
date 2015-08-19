@@ -90,7 +90,7 @@ function getGameHtml(team_pair, score_pair, date, status) {
 // return: ['9 Aug, 2015', '14:00'] (Note date format is DMY, confirms with UK format)
 function parseRawDate(raw_date) {
 	var d = new Date(raw_date)
-	console.log(d)
+
 	var day = d.getDate()
 	var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 
 		'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()]
