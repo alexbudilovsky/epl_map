@@ -21,6 +21,7 @@ function updateMap(matchday) {
 	}
 }
 
+
 function moveSliderLeft() {
 	currentMatchday = getSliderValue()
 	if (currentMatchday > firstWeek) {
@@ -46,14 +47,13 @@ function getSliderValue() {
     return parseInt(document.getElementById(sliderId).value)
 }
 
-// size_large is boolean, by default needs to be false - small
-function getPathToTeam(team_code, size_large) {
-	base = "images/team_icons/" + team_code
-	if (size_large) {
-		return base + ".png"
-	} else {
-		return base + "_small.png"
-	}
+// returns both large and small icons (svg-scaled) 
+function getIconsForTeam(team_code) {
+    teamSVGPath = "images/team_icons_svg/" + team_code + ".svg"
+    largeIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, new google.maps.Size(80,80))
+    smallIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, new google.maps.Size(60,60))
+
+    return [largeIcon, smallIcon]
 }
 
 ////////////////////////////////
@@ -73,34 +73,34 @@ function putTeamOnMap(team_code) {
 // Add a marker to the map and push to the array.
 // add info window if releasing slider
 function addMarker(location, team_code) {
-  var smallIconPath = getPathToTeam(home_team_code, false)
-  var largeIconPath = getPathToTeam(home_team_code, true)
+  var largeSmallIcons = getIconsForTeam(team_code)
+
   var marker = new google.maps.Marker({
     position: location,
     map: map,
     title: team_code_and_name[team_code],
-    icon: smallIconPath
+    icon: largeSmallIcons[1]
   });
   marker.clicked = false
 
   // these listeners only deal with icon size.  load_score.js will deal with only infoWindows
   google.maps.event.addListener(marker, 'mouseover', function() {
-	if (this.getIcon() != largeIconPath) {
-		this.setIcon(largeIconPath)
+	if (this.getIcon() != largeSmallIcons[0]) {
+		this.setIcon(largeSmallIcons[0])
 	} });
 
   google.maps.event.addListener(marker, 'mouseout', function() {
 	if (!this.clicked) {
-		this.setIcon(smallIconPath)
+		this.setIcon(largeSmallIcons[1])
 	} });
 
   google.maps.event.addListener(marker, 'click', function() {
   	this.clicked = !this.clicked;
 
   	if (this.clicked) {
-  		this.setIcon(largeIconPath)	
+  		this.setIcon(largeSmallIcons[0])	
   	} else {
-  		this.setIcon(smallIconPath)
+  		this.setIcon(largeSmallIcons[1])
   	}
   });
 

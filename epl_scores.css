@@ -1,15 +1,18 @@
 .team_cell {
 	color: red;
+	text-align: left;
 }
 
 .team_score {
-	
+	text-align: center;
+	font-weight:bold;
 }
 
 .game_status {
-	
+	text-align: center;
+	font-weight: bold;
 }
 
 .game_date {
-	
+	text-align: left;
 }

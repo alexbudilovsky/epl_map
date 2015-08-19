@@ -23,7 +23,7 @@ function parse(json) {
 	fixtures = json["fixtures"]
 	for (var i = 0; i < fixtures.length; i++) {
 		fixture = fixtures[i]
-		console.log(fixture)
+
 		homeTeamName = fixture["homeTeamName"]
 		teams = [homeTeamName, fixture["awayTeamName"]]
 		scores = [fixture["result"]["goalsHomeTeam"], fixture["result"]["goalsAwayTeam"]]
@@ -67,11 +67,16 @@ function addInfoWindowToHomeTeamMarker(homeTeamName, html) {
 function getGameHtml(team_pair, score_pair, date, status) {
 	homeScoreToShow = (score_pair[0] == -1 ? "" : score_pair[0])
 	awayScoreToShow = (score_pair[1] == -1 ? "" : score_pair[1])
+	formattedDateTime = parseRawDate(date)
 
-	gameStatus = (status == "FINISHED" ? "FT" : "")
+	if (status == "FINISHED") {
+		gameStatus = "FT"
+	} else if (status == "TIMED") {
+		gameStatus = formattedDateTime[1]
+	}
 
 	var html = "<table class=\"score_table\">"
-	html += "<tr><td class=\"game_date\" colspan=\"2\">" + date + "</td> <td></td> </tr>"
+	html += "<tr><td class=\"game_date\" colspan=\"2\">" + formattedDateTime[0] + "</td> <td></td> </tr>"
 	html += "<tr><td class=\"team_cell\">" + team_pair[0] + "</td> <td class=\"team_score\"><b>" 
 		+ homeScoreToShow + "</b></td> <td class=\"game_status\" rowspan=\"2\">" + gameStatus + "</td></tr>"
 	html += "<tr><td class=\"team_cell\">" + team_pair[1] + "</td> <td class=\"team_score\"><b>" 
@@ -79,4 +84,23 @@ function getGameHtml(team_pair, score_pair, date, status) {
 	html += "</table>"
 
 	return html
+}
+
+// ex: raw_date = '2015-08-09T14:00:00Z'
+// return: ['9 Aug, 2015', '14:00'] (Note date format is DMY, confirms with UK format)
+function parseRawDate(raw_date) {
+	var d = new Date(raw_date)
+	console.log(d)
+	var day = d.getDate()
+	var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 
+		'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()]
+	var year = d.getFullYear()
+	var hour = d.getHours()
+	var min = d.getMinutes()
+
+	if (min < 10) {
+		min = "0" + min
+	}
+
+	return [day + " " + month + ", " + year, hour + ":" + min + " GMT"]
 }
