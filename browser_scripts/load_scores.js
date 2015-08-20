@@ -92,6 +92,7 @@ function parseRawDate(raw_date) {
 	var d = new Date(raw_date)
 
 	var day = d.getDate()
+	var dayOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getDay()]
 	var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 
 		'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()]
 	var year = d.getFullYear()
@@ -102,5 +103,5 @@ function parseRawDate(raw_date) {
 		min = "0" + min
 	}
 
-	return [day + " " + month + ", " + year, hour + ":" + min + " GMT"]
+	return [dayOfWeek + " " + day + " " + month + ", " + year, hour + ":" + min + " GMT"]
 }
