@@ -6,10 +6,11 @@
         };
         var mapCenter = bounds.getCenter()
 
-        var zoomLevel = 6;
+        var currentZoomLevel = 6;
+        var initialZoomLevel = 6
         var mapOptions = {
           center: mapCenter,
-          zoom: zoomLevel,
+          zoom: initialZoomLevel,
           panControl:false,
           zoomControl:true,
           streetViewControl:false,
@@ -76,7 +77,7 @@
 
         google.maps.event.addDomListener(controlUI, 'click', function() {
           map.setCenter(mapCenter)
-          map.setZoom(zoomLevel)
+          map.setZoom(initialZoomLevel)
         });
 
         google.maps.event.addDomListener(todayUI, 'click', function() {
