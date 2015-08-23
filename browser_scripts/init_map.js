@@ -16,10 +16,10 @@
           streetViewControl:false,
           scrollwheel:true
         };
-        var map
 
+        var map
         /**
-         * The CenterControl adds a control to the map that recenters the map on Chicago.
+         * The CenterControl adds a control to the map that recenters the map
          * This constructor takes the control DIV as an argument.
          * @constructor
          */
@@ -86,7 +86,6 @@
       }
 
       function initialize() {
-
         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
         // Create the DIV to hold the control and

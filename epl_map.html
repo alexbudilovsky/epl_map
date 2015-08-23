@@ -8,7 +8,7 @@
     <style type="text/css">
       html, body, #map-canvas { margin: 0; padding: 0;}
     </style>
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?"></script>
     <script type="text/javascript" src="browser_scripts/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" src="browser_scripts/teams_schedules_arrays.js"></script>
     <script type="text/javascript" src="browser_scripts/team_svg_sizes.js"></script>
@@ -29,7 +29,11 @@
       <button type="button" onClick="moveSliderRight(); loadScoresForSliderMatchday()">&#9658;</button>
     </div>
   </div>
-	<div id="map-canvas"></div>
+	<div id="map-canvas">
+  </div>
+  <div id="loading_gif">
+    <img src="images/loader.gif" />
+  </div>
 	<br>
   </body>
 </html>

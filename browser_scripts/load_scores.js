@@ -15,11 +15,15 @@ function loadScoresForSliderMatchday() {
 		success: parse, // name of the function to call upon success
 		error: jqueryError,
 		cache: false,
-		async: true
+		async: true,
+		beforeSend: function() { $("#loading_gif").show(); },
+
 	});
 }
 
 function parse(json) {
+	$("#loading_gif").hide();
+
 	fixtures = json["fixtures"]
 	for (var i = 0; i < fixtures.length; i++) {
 		fixture = fixtures[i]

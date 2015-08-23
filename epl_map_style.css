@@ -1,12 +1,20 @@
-#map-canvas {
-	width: 50%;
-	height: 550px;
-}
-
 h1 {
     color: navy;
     margin-left: 20px;
     text-align: center;
+}
+
+#map-canvas {
+    width: 50%;
+    height: 550px;
+    position: relative;
+}
+
+#loading_gif {
+    position: absolute;
+    top: 45%;
+    left: 225px;
+    z-index: 99;
 }
 
 #sliderAndDate {
