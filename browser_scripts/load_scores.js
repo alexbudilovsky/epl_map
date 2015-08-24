@@ -16,24 +16,23 @@ function loadScoresForSliderMatchday() {
 		error: jqueryError,
 		cache: false,
 		async: true,
-		beforeSend: function() { $("#loading_gif").show(); },
-
+		beforeSend: function() { $("#loading_gif").show(); }
 	});
 }
 
 function parse(json) {
 	$("#loading_gif").hide();
 
-	fixtures = json["fixtures"]
+	var fixtures = json["fixtures"]
 	for (var i = 0; i < fixtures.length; i++) {
-		fixture = fixtures[i]
+		var fixture = fixtures[i]
 
-		homeTeamName = fixture["homeTeamName"]
-		teams = [homeTeamName, fixture["awayTeamName"]]
-		scores = [fixture["result"]["goalsHomeTeam"], fixture["result"]["goalsAwayTeam"]]
+		var homeTeamName = fixture["homeTeamName"]
+		var teams = [homeTeamName, fixture["awayTeamName"]]
+		var scores = [fixture["result"]["goalsHomeTeam"], fixture["result"]["goalsAwayTeam"]]
 
 		//TODO deal with inprog game??
-		infoWindowHtml = getGameHtml(teams, scores, fixture["date"], fixture["status"])
+		var infoWindowHtml = getGameHtml(teams, scores, fixture["date"], fixture["status"])
 
 		addInfoWindowToHomeTeamMarker(homeTeamName, infoWindowHtml)
 	}
@@ -45,12 +44,13 @@ function jqueryError(jqXHR, textStatus, errorThrown) {
 }
 
 function addInfoWindowToHomeTeamMarker(homeTeamName, html) {
-	teamCode = team_code_and_name[homeTeamName]
-	marker = team_code_to_marker[teamCode]
+	var teamCode = team_code_and_name[homeTeamName]
+	var marker = team_code_to_marker[teamCode]
 
 	var infoWindow = new google.maps.InfoWindow;
 	infoWindow.setContent(html);
 
+	/*
 	google.maps.event.addListener(marker, 'mouseover', function() {
 		if (infoWindow.getMap() == null) {
     		infoWindow.open(map,this)
@@ -62,6 +62,26 @@ function addInfoWindowToHomeTeamMarker(homeTeamName, html) {
     		infoWindow.close()
    		}
   	});
+	*/
+
+  	google.maps.event.addListener(marker, 'mouseover', mouseOverInfowindowEvent(marker, infoWindow));
+  	google.maps.event.addListener(marker, 'mouseout', mouseOutInfowindowEvent(marker, infoWindow));
+}
+
+function  mouseOverInfowindowEvent(marker, infoWindow) {
+  return function() {
+  	if (infoWindow.getMap() == null) {
+  		infoWindow.open(map, this)
+  	}
+  }
+}
+
+function mouseOutInfowindowEvent(marker, infoWindow) {
+	return function() {
+  		if (infoWindow.getMap() != null && !this.clicked) {
+    		infoWindow.close()
+   		}
+	}
 }
 
 // for infowindow 

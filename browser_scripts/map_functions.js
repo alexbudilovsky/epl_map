@@ -5,24 +5,11 @@ var sliderId = "matchdaySlider"
 // end constant definitions
 
 team_code_to_marker = {} // current markers displayed - key is team code
-team_code_to_icons = {}  // team code to [largeIcon, smallIcon]
-
-function populateTeamCodeToIcons() {
-  team_code_to_icons = {}
-  for (code in team_crest_svg_size) {
-    team_code_to_icons[code] = getIconsForTeam(code)
-  }
-}
 
 // displays all teams for a given matchday
 function updateMap() {
-   matchday = getSliderValue()
-
-  if (Object.keys(team_code_to_icons).length == 0) {
-    populateTeamCodeToIcons() // initialize iconss
-  }
-
 	deleteMarkers()
+  matchday = getSliderValue()
 
 	all_games = full_schedule_by_matchday[matchday]
 	
@@ -33,8 +20,6 @@ function updateMap() {
 
 		putTeamOnMap(home_team_code)
 	}
-
-  addIcons()
 }
 
 function moveSliderLeft() {
@@ -54,31 +39,16 @@ function moveSliderRight() {
 }
 
 function moveSlider(matchday) {
+  setSliderValue(matchday)
+  updateMap()
+}
+
+function setSliderValue(matchday) {
 	document.getElementById(sliderId).value = matchday;
-	updateMap()
 }
 
 function getSliderValue() {
     return parseInt(document.getElementById(sliderId).value)
-}
-
-// returns both large and small icons (svg-scaled) 
-function getIconsForTeam(team_code) {
-    smallHeight = 10*currentZoomLevel
-    largeHeight = 10*(currentZoomLevel+2)
-    teamSVGPath = "images/team_icons_svg/" + team_code + ".svg"
-    smallIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, scaleTeamIconSizeToHeight(team_code, smallHeight))
-    largeIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, scaleTeamIconSizeToHeight(team_code, largeHeight))
-
-    return [largeIcon, smallIcon]
-}
-
-// returns size object scaled to height
-function scaleTeamIconSizeToHeight(team_code, height) {
-  SVGSize = team_crest_svg_size[team_code] // [width, height]
-  scaledWidth = SVGSize[0] * (height/SVGSize[1])
-
-  return new google.maps.Size(scaledWidth, height)
 }
 
 ////////////////////////////////
@@ -98,60 +68,86 @@ function putTeamOnMap(team_code) {
 // Add a marker to the map and push to the array.
 // add info window if releasing slider
 function addMarker(location, team_code) {
-  var largeSmallIcons = team_code_to_icons[team_code]
-
   var marker = new google.maps.Marker({
     position: location,
     map: map,
-    title: team_code_and_name[team_code]
+    title: team_code_and_name[team_code],
   });
-  marker.clicked = false
+  marker.clicked = false;
 
   team_code_to_marker[team_code] = marker
+
+  addIconsToMarker(team_code)
+  addIconListenersToMarker(team_code)
 }
 
-function addIcons() {
-  for (team_code in team_code_to_marker) {
-    var largeSmallIcons = team_code_to_icons[team_code]
-    var marker = team_code_to_marker[team_code]
+// adds or refreshed images associated to marker based on click & zoom level
+function addIconsToMarker(team_code) {
+  var marker = team_code_to_marker[team_code]
+  scaledMarkerImages = getScaledMarkerImage(team_code, map.getZoom())
+  marker.largeImage = scaledMarkerImages[0]
+  marker.smallImage = scaledMarkerImages[1]
 
-    if (marker.clicked) {
-      marker.setIcon(largeSmallIcons[0])
-    } else {
-      marker.setIcon(largeSmallIcons[1])
-    }
-
-    // these listeners only deal with icon size.  load_score.js will deal with only infoWindows
-    google.maps.event.addListener(marker, 'mouseover', mouseOverEvent(marker, largeSmallIcons[0]));
-    google.maps.event.addListener(marker, 'mouseout', mouseOutEvent(marker, largeSmallIcons[1]));
-    google.maps.event.addListener(marker, 'click', mouseClickEvent(marker, largeSmallIcons));
+  if (marker.clicked) {
+    marker.setIcon(marker.largeImage)
+  } else {
+    marker.setIcon(marker.smallImage)
   }
 }
 
-function  mouseOverEvent(marker, largeIcon) {
+function addIconListenersToMarker(team_code) {
+  var marker = team_code_to_marker[team_code]
+
+  // these listeners only deal with icon size.  load_score.js will deal with only infoWindows
+  google.maps.event.addListener(marker, 'mouseover', mouseOverEvent(marker));
+  google.maps.event.addListener(marker, 'mouseout', mouseOutEvent(marker));
+  google.maps.event.addListener(marker, 'click', mouseClickEvent(marker));
+}
+
+// returns [largeImage, smallImage]
+function getScaledMarkerImage(team_code, zoomLevel) {
+  teamSVGPath = "images/team_icons_svg/" + team_code + ".svg"
+  smallHeight = 10*zoomLevel
+  largeHeight = 10*(zoomLevel+2)
+
+  smallIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, scaleTeamIconSizeToHeight(team_code, smallHeight))
+  largeIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, scaleTeamIconSizeToHeight(team_code, largeHeight))
+
+  return [largeIcon, smallIcon]
+}
+
+// returns size object scaled to height
+function scaleTeamIconSizeToHeight(team_code, height) {
+  SVGSize = team_crest_svg_size[team_code] // [width, height]
+  scaledWidth = SVGSize[0] * (height/SVGSize[1])
+
+  return new google.maps.Size(scaledWidth, height)
+}
+
+function  mouseOverEvent(marker) {
   return function() {
-    if (marker.getIcon() != largeIcon && !marker.clicked) {
-      marker.setIcon(largeIcon)
+    if (marker.getIcon() != marker.largeImage && !marker.clicked) {
+      marker.setIcon(marker.largeImage)
     } 
   }
 }
 
-function mouseOutEvent(marker, smallIcon) {
+function mouseOutEvent(marker) {
   return function() {
     if (!marker.clicked) {
-      marker.setIcon(smallIcon)
+      marker.setIcon(marker.smallImage)
     }
   }
 }
 
-function mouseClickEvent(marker, largeSmallIcons) {
+function mouseClickEvent(marker) {
   return function() {
     marker.clicked = !marker.clicked
 
-    if (this.clicked) {
-      this.setIcon(largeSmallIcons[0])
+    if (marker.clicked) {
+      marker.setIcon(marker.largeImage)
     } else {
-      this.setIcon(largeSmallIcons[1])
+      marker.setIcon(marker.smallImage)
     }
   }
 }
@@ -160,6 +156,10 @@ function mouseClickEvent(marker, largeSmallIcons) {
 function setAllMap(passedMap) {
   for (var key in team_code_to_marker) {
     team_code_to_marker[key].setMap(passedMap);
+
+    if (passedMap == null) {
+      team_code_to_marker[key] = null
+    }
   }
 }
 
@@ -183,10 +183,14 @@ function addMapListeners() {
   map.addListener('zoom_changed', function() {
     currentZoomLevel = map.getZoom()
     if (currentZoomLevel > (initialZoomLevel - 1)) {
-      populateTeamCodeToIcons()
-      addIcons()
+      refreshMarkerIcons();
     }
   });
+}
+
+// helper function
+function refreshMarkerIcons() {
+  Object.keys(team_code_to_marker).map(addIconsToMarker);
 }
 
 google.maps.event.addDomListener(window, 'load', addMapListeners)
