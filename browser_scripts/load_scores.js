@@ -16,12 +16,16 @@ function loadScoresForSliderMatchday() {
 		error: jqueryError,
 		cache: false,
 		async: true,
-		beforeSend: function() { $("#loading_gif").show(); }
+		beforeSend: function() { 
+			$("#loading_gif").show();
+			$(".buttonArrows").attr("disabled", true);
+		}
 	});
 }
 
 function parse(json) {
 	$("#loading_gif").hide();
+	$(".buttonArrows").attr("disabled", false);
 
 	var fixtures = json["fixtures"]
 	for (var i = 0; i < fixtures.length; i++) {

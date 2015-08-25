@@ -23,10 +23,10 @@
     <a href="index.html">Home Page</a> | <a href="https://github.com/alexbudilovsky/epl_map" target="_blank">GitHub</a>
     <br><br><br>
     <div id="sliderAndDate">
-      <button type="button" onClick="moveSliderLeft(); loadScoresForSliderMatchday()">&#9668;</button>
+      <button type="button" onClick="moveSliderLeft()" class="buttonArrows">&#9668;</button>
       <input type="range" id="matchdaySlider" min="1" value="1" max="38" step="1" class="slider" 
         onchange="updateMap()" oninput="updateMap()">
-      <button type="button" onClick="moveSliderRight(); loadScoresForSliderMatchday()">&#9658;</button>
+      <button type="button" onClick="moveSliderRight()" class="buttonArrows">&#9658;</button>
     </div>
   </div>
 	<div id="map-canvas">

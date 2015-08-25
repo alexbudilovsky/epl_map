@@ -25,8 +25,8 @@ function updateMap() {
 function moveSliderLeft() {
 	currentMatchday = getSliderValue()
 	if (currentMatchday > firstWeek) {
-		currentMatchday--
-		moveSlider(currentMatchday)
+		currentMatchday--;
+		moveSlider(currentMatchday);
 	}
 }
 
@@ -34,13 +34,14 @@ function moveSliderRight() {
 	currentMatchday = getSliderValue()
 	if (currentMatchday < lastWeek) {
 		currentMatchday++;
-		moveSlider(currentMatchday)
+		moveSlider(currentMatchday);
 	}
 }
 
 function moveSlider(matchday) {
   setSliderValue(matchday)
   updateMap()
+  loadScoresForSliderMatchday()
 }
 
 function setSliderValue(matchday) {
