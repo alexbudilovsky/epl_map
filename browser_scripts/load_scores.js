@@ -50,20 +50,6 @@ function addInfoWindowToHomeTeamMarker(homeTeamName, html) {
 	var infoWindow = new google.maps.InfoWindow;
 	infoWindow.setContent(html);
 
-	/*
-	google.maps.event.addListener(marker, 'mouseover', function() {
-		if (infoWindow.getMap() == null) {
-    		infoWindow.open(map,this)
-    	}
-  	});
-
-  	google.maps.event.addListener(marker, 'mouseout', function() {
-  		if (infoWindow.getMap() != null && !this.clicked) {
-    		infoWindow.close()
-   		}
-  	});
-	*/
-
   	google.maps.event.addListener(marker, 'mouseover', mouseOverInfowindowEvent(marker, infoWindow));
   	google.maps.event.addListener(marker, 'mouseout', mouseOutInfowindowEvent(marker, infoWindow));
 }
@@ -89,9 +75,9 @@ function mouseOutInfowindowEvent(marker, infoWindow) {
 // if scores are -1, game has not been recorded yet
 // status -> "FINISHED", "TIMED", etc
 function getGameHtml(team_pair, score_pair, date, status) {
-	homeScoreToShow = (score_pair[0] == -1 ? "" : score_pair[0])
-	awayScoreToShow = (score_pair[1] == -1 ? "" : score_pair[1])
-	formattedDateTime = parseRawDate(date)
+	var homeScoreToShow = (score_pair[0] == -1 ? "" : score_pair[0])
+	var awayScoreToShow = (score_pair[1] == -1 ? "" : score_pair[1])
+	var formattedDateTime = parseRawDate(date)
 
 	if (status == "FINISHED") {
 		gameStatus = "FT"
@@ -99,12 +85,27 @@ function getGameHtml(team_pair, score_pair, date, status) {
 		gameStatus = formattedDateTime[1]
 	}
 
+	var awayTeamSVGPath = "images/team_icons_svg/" + team_code_and_name[team_pair[1]] + ".svg"
+	var homeTeamSVGPath = "images/team_icons_svg/" + team_code_and_name[team_pair[0]] + ".svg"
+
 	var html = "<table class=\"score_table\">"
-	html += "<tr><td class=\"game_date\" colspan=\"2\">" + formattedDateTime[0] + "</td> <td></td> </tr>"
-	html += "<tr><td class=\"team_cell\">" + team_pair[0] + "</td> <td class=\"team_score\"><b>" 
-		+ homeScoreToShow + "</b></td> <td class=\"game_status\" rowspan=\"2\">" + gameStatus + "</td></tr>"
-	html += "<tr><td class=\"team_cell\">" + team_pair[1] + "</td> <td class=\"team_score\"><b>" 
-		+ awayScoreToShow + "</b></td> </tr>"
+	html += "<tr><td class=\"game_date\" colspan=\"3\">" + formattedDateTime[0] + "</td> <td></td> </tr>"
+	html += "<tr><td><img class=\"svg_image_cell\" src=\"" + homeTeamSVGPath + "\"></td><td class=\"team_cell\">" 
+		+ team_pair[0] + "</td> <td class=\"team_score\""
+	
+	if (score_pair[0] > score_pair[1]) {
+		html += " id=\"winning_team_score\""
+	}
+
+	html += ">" + homeScoreToShow + "</td><td class=\"game_status\" rowspan=\"2\">" + gameStatus + "</td></tr>"
+	html += "<tr><td><img class=\"svg_image_cell\" src=\"" + awayTeamSVGPath + "\"></td><td class=\"team_cell\">" 
+		+ team_pair[1] + "</td><td class=\"team_score\"" 
+	
+	if (score_pair[1] > score_pair[0]) {
+		html += " id=\"winning_team_score\""
+	}
+
+	html += ">" + awayScoreToShow + "</td> </tr>"
 	html += "</table>"
 
 	return html

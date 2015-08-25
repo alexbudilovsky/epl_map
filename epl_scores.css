@@ -1,10 +1,17 @@
+td {
+	padding: 3px auto 3px auto;
+}
+
 .team_cell {
-	color: red;
+	color: DarkSlateBlue;
 	text-align: left;
 }
 
 .team_score {
 	text-align: center;
+}
+
+#winning_team_score {
 	font-weight:bold;
 }
 
@@ -15,4 +22,9 @@
 
 .game_date {
 	text-align: left;
+}
+
+.svg_image_cell {
+	width: 15px;
+	height: 15px;
 }
