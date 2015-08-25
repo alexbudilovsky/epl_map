@@ -17,15 +17,22 @@ function loadScoresForSliderMatchday() {
 		cache: false,
 		async: true,
 		beforeSend: function() { 
-			$("#loading_gif").show();
-			$(".buttonArrows").attr("disabled", true);
+			disableButtonsShowLoading(true)
 		}
 	});
 }
 
+function disableButtonsShowLoading(disable) {
+	$(".buttonArrows").attr("disabled", disable);
+	if (disable) {
+		$("#loading_gif").show();
+	} else {
+		$("#loading_gif").hide();
+	}
+}
+
 function parse(json) {
-	$("#loading_gif").hide();
-	$(".buttonArrows").attr("disabled", false);
+	disableButtonsShowLoading(false)
 
 	var fixtures = json["fixtures"]
 	for (var i = 0; i < fixtures.length; i++) {

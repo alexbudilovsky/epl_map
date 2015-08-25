@@ -28,7 +28,3 @@ td {
 	width: 15px;
 	height: 15px;
 }
-
-button[type=button] {
-	disabled:true;
-}
