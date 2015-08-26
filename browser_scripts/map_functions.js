@@ -1,15 +1,17 @@
 // constants definitions here
 var firstWeek = 1
 var lastWeek = 38
-var sliderId = "matchdaySlider"
+var sliderId = "matchday-slider"
 // end constant definitions
 
 team_code_to_marker = {} // current markers displayed - key is team code
 
 // displays all teams for a given matchday
 function updateMap() {
-	deleteMarkers()
-  matchday = getSliderValue()
+  updateMatchdayInHeader()
+
+	deleteMarkers();
+  var matchday = getSliderValue()
 
 	all_games = full_schedule_by_matchday[matchday]
 	
@@ -22,8 +24,12 @@ function updateMap() {
 	}
 }
 
+function updateMatchdayInHeader() {
+  document.getElementById("header-matchday-span").innerHTML = document.getElementById(sliderId).value;
+}
+
 function moveSliderLeft() {
-	currentMatchday = getSliderValue()
+	var currentMatchday = getSliderValue()
 	if (currentMatchday > firstWeek) {
 		currentMatchday--;
 		moveSlider(currentMatchday);
@@ -31,7 +37,7 @@ function moveSliderLeft() {
 }
 
 function moveSliderRight() {
-	currentMatchday = getSliderValue()
+	var currentMatchday = getSliderValue()
 	if (currentMatchday < lastWeek) {
 		currentMatchday++;
 		moveSlider(currentMatchday);

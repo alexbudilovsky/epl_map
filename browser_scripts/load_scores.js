@@ -23,16 +23,31 @@ function loadScoresForSliderMatchday() {
 }
 
 function disableButtonsShowLoading(disable) {
-	$(".buttonArrows").attr("disabled", disable);
+	$(".button-arrows").attr("disabled", disable);
 	if (disable) {
-		$("#loading_gif").show();
+		$("#loading-gif").show();
 	} else {
-		$("#loading_gif").hide();
+		$("#loading-gif").hide();
 	}
 }
 
+function checkButtonArrows() {
+  var currentMatchday = getSliderValue();
+
+  if (currentMatchday == firstWeek) {
+    $("#button-left").attr("disabled", true);
+    $("#button-right").attr("disabled", false);
+  } else if (currentMatchday == lastWeek) {
+    $("#button-left").attr("disabled", false);
+    $("#button-right").attr("disabled", true);
+  } else {
+	$(".button-arrows").attr("disabled", false);
+  }
+}
+
 function parse(json) {
-	disableButtonsShowLoading(false)
+	disableButtonsShowLoading(false);
+	checkButtonArrows();
 
 	var fixtures = json["fixtures"]
 	for (var i = 0; i < fixtures.length; i++) {

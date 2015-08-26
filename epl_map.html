@@ -17,23 +17,33 @@
     <script type="text/javascript" src="browser_scripts/load_scores.js"></script>
   </head>
   <body onload="updateMap(); loadScoresForSliderMatchday()"> 
-    <br>
-  <div id="container">
-      <div id="right-nav-links">
-    <a href="index.html">Home Page</a> | <a href="https://github.com/alexbudilovsky/epl_map" target="_blank">GitHub</a>
-    <br><br><br>
-    <div id="sliderAndDate">
-      <button type="button" onClick="moveSliderLeft()" class="buttonArrows">&#9668;</button>
-      <input type="range" id="matchdaySlider" min="1" value="1" max="38" step="1" class="slider" 
-        onchange="updateMap()" oninput="updateMap()" onmouseup="loadScoresForSliderMatchday()">
-      <button type="button" onClick="moveSliderRight()" class="buttonArrows">&#9658;</button>
-    </div>
-  </div>
-	<div id="map-canvas">
-  </div>
-  <div id="loading_gif">
+  
+  <h1>English Premier League Dynamic Matchday Map</h1>
+
+  <div class="main-divs" id="map-canvas"></div>
+  <div id="loading-gif">
     <img src="images/loader.gif" />
   </div>
-	<br>
+
+  <div class="main-divs" id="right-side">
+    <h2>Matchday - <span id="header-matchday-span">3</span></h2>
+
+    <div id="slider-and-date">
+        <button type="button" onClick="moveSliderLeft()" id="button-left" class="button-arrows">&#9668;</button>
+        <input type="range" id="matchday-slider" min="1" value="1" max="38" step="1" class="slider" 
+          onchange="updateMap()" oninput="updateMap()" onmouseup="loadScoresForSliderMatchday()">
+        <button type="button" onClick="moveSliderRight()" id="button-right" class="button-arrows">&#9658;</button>
+    </div>
+
+    <table>
+
+    </table>
+
+    <div id="right-nav-links">
+      <a href="index.html">Home Page</a> | <a href="https://github.com/alexbudilovsky/epl_map" target="_blank">GitHub</a>
+    </div>
+
+  </div>
+
   </body>
 </html>
