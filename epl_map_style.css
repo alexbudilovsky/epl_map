@@ -99,5 +99,10 @@ td, th {
 #scrollable-table-div {
     height: 300px;
     overflow: auto;
-    border: 1px solid black;
+}
+
+#league-table-wrapper-div {
+    width: 70%;
+        margin-left: auto;
+    margin-right: auto;
 }
