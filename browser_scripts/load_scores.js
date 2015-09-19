@@ -1,4 +1,7 @@
 var baseUrl = "http://api.football-data.org/alpha/soccerseasons/398/fixtures/?matchday="
+var leagueTableUrl = "http://api.football-data.org/alpha/soccerseasons/398/leagueTable"
+
+var token = '42e64211de01430dae46dce7230d9825'
 
 // ajax call here loads the live scores for the selected matchday and populates infowindows of all markers
 function loadScoresForSliderMatchday() {
@@ -8,7 +11,7 @@ function loadScoresForSliderMatchday() {
 
 	jQuery.support.cors = true;  // needed for IE
 	$.ajax({
-		headers: { 'X-Auth-Token': '42e64211de01430dae46dce7230d9825' },
+		headers: { 'X-Auth-Token': token },
 		type:'GET',
 		url: url, // name of file you want to parse
 		dataType: 'json', // type of file you are trying to read
@@ -111,8 +114,8 @@ function getGameHtml(team_pair, score_pair, date, status) {
 		gameStatus = formattedDateTime[1]
 	}
 
-	var awayTeamSVGPath = "images/team_icons_svg/" + team_code_and_name[team_pair[1]] + ".svg"
-	var homeTeamSVGPath = "images/team_icons_svg/" + team_code_and_name[team_pair[0]] + ".svg"
+	var awayTeamSVGPath = getSVGPath(team_pair[1])
+	var homeTeamSVGPath = getSVGPath(team_pair[0])
 
 	var html = "<table class=\"score_table\">"
 	html += "<tr><td class=\"game_date\" colspan=\"3\">" + formattedDateTime[0] + "</td> <td></td> </tr>"
@@ -137,6 +140,10 @@ function getGameHtml(team_pair, score_pair, date, status) {
 	return html
 }
 
+function getSVGPath(full_team_name) {
+	return "images/team_icons_svg/" + team_code_and_name[full_team_name] + ".svg"
+}
+
 // ex: raw_date = '2015-08-09T14:00:00Z'
 // return: ['9 Aug, 2015', '14:00'] (Note date format is DMY, confirms with UK format)
 function parseRawDate(raw_date) {
@@ -155,4 +162,84 @@ function parseRawDate(raw_date) {
 	}
 
 	return [dayOfWeek + " " + day + " " + month + ", " + year, hour + ":" + min + " GMT"]
+}
+
+function loadLeagueTable() {
+	jQuery.support.cors = true;  // needed for IE
+	$.ajax({
+		headers: { 'X-Auth-Token': token },
+		type:'GET',
+		url: leagueTableUrl, // name of file you want to parse
+		dataType: 'json', // type of file you are trying to read
+		success: parseLeagueTable, // name of the function to call upon success
+		error: jqueryErrorTable,
+		cache: false,
+		async: true,
+	});
+}
+
+function parseLeagueTable(json) {
+	var teams = json["standing"]
+	var table = $('#league-table')
+
+	for (var i = 0; i < teams.length; i++) {
+		var team = teams[i]
+		var teamName = team['teamName']
+		var position = team['position']
+		var played = team['playedGames']
+		var goalFor = team['goals']
+		var goalAgainst = team['goalsAgainst']
+		var goalDiff = team['goalDifference']
+		var points = team['points']
+
+		var rowStr = createCells(i+1, "<img class=\"standings-logo-svg\" src=\"" + getSVGPath(teamName) + "\"> " + teamName, played, goalFor, goalAgainst, goalDiff, points)
+
+		table.append(rowStr)
+	}
+}
+
+// if here, need to read a static file
+function jqueryErrorTable(jqXHR, textStatus, errorThrown) {
+	console.log(errorThrown+'\n'+status+'\n'+jqXHR.statusText);
+
+	var rawFile = new XMLHttpRequest();
+
+	rawFile.open("GET", "C:\Users\Alex\Desktop\leagueTable.txt", false)
+
+	rawFile.onreadystatechange = function() {
+		if (rawFile.readyState === 4) {
+			if (rawFile.status === 200 || rawFile.status == 0) {
+				var allText = rawFile.reponseText;
+				console.log(allText)
+			}
+		}
+	}
+
+}
+
+
+// better way to do this? jquery? other lib?
+function createCells(idx) {
+	var cells = "<tr class="
+
+	if (idx % 2 == 0) {
+		cells += "\"even-standings-row\">"
+	} else {
+		cells += "\"odd-standings-row\">"
+	}
+
+	for (var i = 0; i < arguments.length; i++) {
+		cells += "<td class="
+
+		if (isNaN(arguments[i])) {
+			cells += "\"standings-cell-text\""
+		} else {
+			cells += "\"standings-cell-num\""
+		}
+
+		cells += ">" + arguments[i] + "</td>"
+	}
+
+	cells += "</tr>"
+	return cells
 }

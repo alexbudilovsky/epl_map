@@ -115,7 +115,7 @@ function addIconListenersToMarker(team_code) {
 function getScaledMarkerImage(team_code, zoomLevel) {
   teamSVGPath = "images/team_icons_svg/" + team_code + ".svg"
   smallHeight = 10*zoomLevel
-  largeHeight = 10*(zoomLevel+2)
+  largeHeight = smallHeight*1.2
 
   smallIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, scaleTeamIconSizeToHeight(team_code, smallHeight))
   largeIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, scaleTeamIconSizeToHeight(team_code, largeHeight))

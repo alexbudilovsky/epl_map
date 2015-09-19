@@ -2,7 +2,7 @@ body {
 	font-family: Arial, Verdana, sans-serif;
 }
 
-h1, h2 {
+h1, h2, h3 {
     color: navy;
     text-align: center;
 }
@@ -12,7 +12,7 @@ h2 {
 }
 
 .main-divs	 {
-	border:1px solid black; /* debug prop, to delete */
+	/* border:1px solid black;  debug prop, to delete */
 	position: relative;
 	width: 49%;
     height: 550px;
@@ -44,7 +44,6 @@ h2 {
     z-index: 99;
 }
 
-
 #slider-and-date {
 	text-align: center;
 }
@@ -52,4 +51,53 @@ h2 {
 #matchday-slider { 
     width: 60%;
     height:20px;
+}
+
+
+/* styles for standings table */
+#league-table {
+	margin-left: auto;
+	margin-right: auto;
+    float: center;
+}
+
+td, th {
+    /* border:1px solid black;  debug prop, to delete */
+    overflow:hidden; white-space:nowrap
+}
+
+.even-standings-row {
+    background-color: #D0D0D0;
+}
+
+.odd-standings-row { 
+
+}
+
+.standings-cell-num {
+    text-align: center;
+}
+
+.standings-cell-text { 
+    text-align: left;
+
+}
+
+.standings-logo-svg {
+    width:  15px;
+    height: 15px;
+}
+
+#league-table-body td + td + td + td + td + td + td {
+    font-weight: bold;
+}
+
+#standings-team-header {
+    text-align: center;
+}
+
+#scrollable-table-div {
+    height: 300px;
+    overflow: auto;
+    border: 1px solid black;
 }
