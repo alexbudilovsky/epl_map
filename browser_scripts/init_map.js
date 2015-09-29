@@ -17,7 +17,7 @@
           scrollwheel:true
         };
 
-        var map
+        var map;
         /**
          * The CenterControl adds a control to the map that recenters the map
          * This constructor takes the control DIV as an argument.
@@ -49,7 +49,7 @@
         controlUI.style.paddingRight = '5px';
         controlUI.innerHTML = 'Center Map';
         controlUI.appendChild(goCenterText);
-/*
+
         // Set CSS for the goToToday control border
         var todayUI = document.createElement('div');
         todayUI.style.backgroundColor = '#fff';
@@ -62,7 +62,7 @@
         todayUI.style.marginLeft = '12px';
         todayUI.style.textAlign = 'center';
         todayUI.title = 'Click to set the current day to today';
-        //controlDiv.appendChild(todayUI);
+        controlDiv.appendChild(todayUI);
 
         // Set CSS for the control interior
         var todayText = document.createElement('div');
@@ -73,18 +73,19 @@
         todayUI.style.paddingLeft = '5px';
         todayUI.style.paddingRight = '5px';
         todayUI.innerHTML = 'Go To Today';
-        //todayUI.appendChild(todayText);
-*/
+        todayUI.appendChild(todayText);
+
         google.maps.event.addDomListener(controlUI, 'click', function() {
-          map.setCenter(mapCenter)
-          map.setZoom(initialZoomLevel)
+          map.setCenter(mapCenter);
+          map.setZoom(initialZoomLevel);
+          moveSlider(getSliderValue());
         });
 
-        /*
+        
         google.maps.event.addDomListener(todayUI, 'click', function() {
-          setSliderToCurrentDay()
+          moveSliderToToday();
         });
-        */
+        
       }
 
       function initialize() {

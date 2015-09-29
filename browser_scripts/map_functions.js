@@ -6,6 +6,21 @@ var sliderId = "matchday-slider"
 
 team_code_to_marker = {} // current markers displayed - key is team code
 
+/*
+  first game day: Aug 8, 2015 - Day #1 -> return 1
+  last game day: May 15, 2016 - Day #282 -> return 38
+*/
+Date.prototype.getCurrentMatchday = function() {
+  var dayOne = new Date(2015,7,8);
+  var currentSeasonDay = Math.ceil((this - dayOne) / 86400000);
+
+  while (!(currentSeasonDay in last_gameday_to_matchday)) {
+    currentSeasonDay++;
+  }
+
+  return last_gameday_to_matchday[currentSeasonDay]
+}
+
 // displays all teams for a given matchday
 function updateMap() {
   updateMatchdayInHeader()
@@ -48,6 +63,14 @@ function moveSlider(matchday) {
   setSliderValue(matchday)
   updateMap()
   loadScoresForSliderMatchday()
+}
+
+function moveSliderToToday() {
+  var currentMatchday = new Date().getCurrentMatchday();
+  // only move slider if day set is not current day OR no markers on map
+  if (currentMatchday != getSliderValue() || Object.keys(team_code_to_marker).length == 0) {
+    moveSlider(currentMatchday)
+  }
 }
 
 function setSliderValue(matchday) {
@@ -113,12 +136,18 @@ function addIconListenersToMarker(team_code) {
 
 // returns [largeImage, smallImage]
 function getScaledMarkerImage(team_code, zoomLevel) {
-  teamSVGPath = "images/team_icons_svg/" + team_code + ".svg"
-  smallHeight = 10*zoomLevel
+  // for some reason only  chrome browsers support svg images fully as markers on google maps
+  // svg images look crisper and rescale better however, so I kept both
+  if (window.chrome != null && window.navigator.vendor === "Google Inc.") {
+    var teamIconPath = "images/team_icons_svg/" + team_code + ".svg"
+  } else {
+    var teamIconPath = "images/team_icons_orig/" + team_code + ".png"
+  }
+  smallHeight = 10*zoomLevel // keep icon proportional to zoom level
   largeHeight = smallHeight*1.2
 
-  smallIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, scaleTeamIconSizeToHeight(team_code, smallHeight))
-  largeIcon = new google.maps.MarkerImage(teamSVGPath, null, null, null, scaleTeamIconSizeToHeight(team_code, largeHeight))
+  smallIcon = new google.maps.MarkerImage(teamIconPath, null, null, null, scaleTeamIconSizeToHeight(team_code, smallHeight))
+  largeIcon = new google.maps.MarkerImage(teamIconPath, null, null, null, scaleTeamIconSizeToHeight(team_code, largeHeight))
 
   return [largeIcon, smallIcon]
 }
