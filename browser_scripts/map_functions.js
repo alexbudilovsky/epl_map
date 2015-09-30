@@ -2,6 +2,7 @@
 var firstWeek = 1
 var lastWeek = 38
 var sliderId = "matchday-slider"
+var headerMatchdaySpan = "header-matchday-span"
 // end constant definitions
 
 team_code_to_marker = {} // current markers displayed - key is team code
@@ -40,7 +41,46 @@ function updateMap() {
 }
 
 function updateMatchdayInHeader() {
-  document.getElementById("header-matchday-span").innerHTML = document.getElementById(sliderId).value;
+  var sliderVal = getSliderValue()
+  document.getElementById(headerMatchdaySpan).innerHTML = sliderVal + ": " + getTextDateRange(sliderVal);
+}
+
+function getTextDateRange(matchday) {
+  var sched = full_schedule_by_matchday[matchday]
+
+  var dates = []
+  for (var i = 0; i < sched.length; i++) {
+    dates.push(new Date(sched[i][2]))
+  }
+
+  var firstGame = new Date(Math.min.apply(null, dates))
+  var lastGame  = new Date(Math.max.apply(null, dates))
+
+  return datesToLocalStringRange(firstGame, lastGame)
+}
+
+// if user's timezone in US, use 'Mon, Aug 6'
+// else, use England style: Mon, 9 Aug
+function datesToLocalStringRange(date1, date2) {
+    if (date1.getDate() === date2.getDate()) {
+      return dateToString(date1)
+    } else {
+      return dateToString(date1) + " - " + dateToString(date2)
+    }
+}
+
+function dateToString(date) {
+  var tzOffset = new Date().getTimezoneOffset()
+
+  var days =   ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"]
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+
+  var base = days[date.getDay()]
+  if (tzOffset >= 300 && tzOffset <= 600) { // UTC -5 and UTC -10 means location in US
+    return base + ", " + months[date.getMonth()] + " " + date.getDate() // 'Mon, Aug 6'
+  } else {    // 'Mon, 6 Aug'
+    return base + ", " + date.getDate() + " " + months[date.getMonth()]
+  }
 }
 
 function moveSliderLeft() {
