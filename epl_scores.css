@@ -5,10 +5,12 @@ table.score_table td {
 .team_cell {
 	color: DarkSlateBlue;
 	text-align: left;
+	font-size: 15px;
 }
 
 .team_score {
 	text-align: center;
+	font-size: 15px;
 }
 
 #winning_team_score {
@@ -18,10 +20,11 @@ table.score_table td {
 .game_status {
 	text-align: center;
 	font-weight: bold;
+	font-size: 15px;
 }
 
 .game_date {
-	text-align: left;
+	font-size: 20px;
 }
 
 .svg_image_cell {

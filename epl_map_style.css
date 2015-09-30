@@ -37,6 +37,10 @@ h2 {
     right: 0;
 }
 
+#thanks-div {
+    text-align: right;
+}
+
 #loading-gif {
     position: absolute;
     top: 45%;
@@ -58,7 +62,11 @@ h2 {
 #league-table {
 	margin-left: auto;
 	margin-right: auto;
-    float: center;
+    border-collapse: collapse;
+}
+
+#league-table td {
+    padding: 3px;
 }
 
 td, th {
@@ -67,11 +75,10 @@ td, th {
 }
 
 .even-standings-row {
-    background-color: #D0D0D0;
 }
 
 .odd-standings-row { 
-
+    background-color: #DADADA;
 }
 
 .standings-cell-num {

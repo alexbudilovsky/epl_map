@@ -184,7 +184,7 @@ function getScaledMarkerImage(team_code, zoomLevel) {
     var teamIconPath = "images/team_icons_orig/" + team_code + ".png"
   }
   smallHeight = 10*zoomLevel // keep icon proportional to zoom level
-  largeHeight = smallHeight*1.2
+  largeHeight = smallHeight*1.4
 
   smallIcon = new google.maps.MarkerImage(teamIconPath, null, null, null, scaleTeamIconSizeToHeight(team_code, smallHeight))
   largeIcon = new google.maps.MarkerImage(teamIconPath, null, null, null, scaleTeamIconSizeToHeight(team_code, largeHeight))

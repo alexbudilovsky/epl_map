@@ -192,9 +192,44 @@ function parseLeagueTable(json) {
 		var goalDiff = team['goalDifference']
 		var points = team['points']
 
-		var rowStr = createCells(i+1, "<img class=\"standings-logo-svg\" src=\"" + getSVGPath(teamName) + "\"> " + teamName, played, goalFor, goalAgainst, goalDiff, points)
+		var teamCodeRowId = team_code_and_name[teamName] + "_standings_row"
+		var rowStr = createCells(teamCodeRowId, i+1, "<img class=\"standings-logo-svg\" src=\"" + getSVGPath(teamName) + "\"> " + teamName, played, goalFor, goalAgainst, goalDiff, points)
 
 		table.append(rowStr)
+
+		var addedRow = $("#" + teamCodeRowId)
+
+	    var onEnter = function() {
+	        var team_code = getHomeTeamCode(this.id.split('_')[0])
+
+	        var marker = team_code_to_marker[team_code]
+	        if (!marker.clicked) {
+		        marker.setIcon(marker.largeImage)
+	        }
+	    };
+
+	    var onLeave = function() {
+	        var team_code = getHomeTeamCode(this.id.split('_')[0])
+
+	        var marker = team_code_to_marker[team_code]
+	        if (!marker.clicked) {
+	        	marker.setIcon(marker.smallImage)
+	        }
+	    }
+
+        addedRow[0].addEventListener('mouseenter', onEnter, false);
+        addedRow[0].addEventListener('mouseleave', onLeave, false);
+	}
+}
+
+// return teamCode or opponent of teamCode for that matchday where returned team is home team
+function getHomeTeamCode(teamCode) {
+	var sched = full_schedule_by_matchday[getSliderValue()]
+	for (var i = 0; i < sched.length; i++) {
+		var match = sched[i]
+		if (match[0] == teamCode || match[1] == teamCode) {
+			return match[0]
+		} 
 	}
 }
 
@@ -219,8 +254,9 @@ function jqueryErrorTable(jqXHR, textStatus, errorThrown) {
 
 
 // better way to do this? jquery? other lib?
-function createCells(idx) {
-	var cells = "<tr class="
+function createCells(teamCodeRowId, idx) {
+	var cells = "<tr id=\"" + teamCodeRowId + "\"" 
+	cells += " class="
 
 	if (idx % 2 == 0) {
 		cells += "\"even-standings-row\">"
@@ -228,7 +264,7 @@ function createCells(idx) {
 		cells += "\"odd-standings-row\">"
 	}
 
-	for (var i = 0; i < arguments.length; i++) {
+	for (var i = 1; i < arguments.length; i++) {
 		cells += "<td class="
 
 		if (isNaN(arguments[i])) {
