@@ -101,4 +101,8 @@
         map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(centerControlDiv);
       }
 
+      function isChromeBrowser() {
+        return (window.chrome != null && window.navigator.vendor === "Google Inc.")
+      }
+
       google.maps.event.addDomListener(window, 'load', initialize);

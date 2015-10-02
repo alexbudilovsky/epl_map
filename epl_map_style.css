@@ -11,6 +11,10 @@ h2 {
 
 }
 
+#div-browser-warning {
+    display: none;
+}
+
 .main-divs	 {
 	/* border:1px solid black;  debug prop, to delete */
 	position: relative;

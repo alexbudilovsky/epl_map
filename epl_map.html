@@ -17,10 +17,11 @@
     <script type="text/javascript" src="browser_scripts/map_functions.js"></script>
     <script type="text/javascript" src="browser_scripts/load_scores.js"></script>
   </head>
-  <body onload="moveSliderToToday(); loadLeagueTable()"> 
+  <body onload="showBrowserWarning() ;moveSliderToToday(); loadLeagueTable()"> 
   
   <h1>English Premier League Dynamic Matchday Map</h1>
 
+  <div id="div-browser-warning">The Google Map widget works best in its native Chrome browser!</div>
   <div class="main-divs" id="map-canvas"></div>
   <div id="loading-gif">
     <img src="images/loader.gif" />

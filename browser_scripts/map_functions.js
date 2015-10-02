@@ -22,6 +22,12 @@ Date.prototype.getCurrentMatchday = function() {
   return last_gameday_to_matchday[currentSeasonDay]
 }
 
+function showBrowserWarning() {
+  if (!isChromeBrowser()) {
+    $("#div-browser-warning").show(); 
+  }
+}
+
 // displays all teams for a given matchday
 function updateMap() {
   updateMatchdayInHeader()
@@ -178,7 +184,7 @@ function addIconListenersToMarker(team_code) {
 function getScaledMarkerImage(team_code, zoomLevel) {
   // for some reason only  chrome browsers support svg images fully as markers on google maps
   // svg images look crisper and rescale better however, so I kept both
-  if (window.chrome != null && window.navigator.vendor === "Google Inc.") {
+  if (isChromeBrowser()) {
     var teamIconPath = "images/team_icons_svg/" + team_code + ".svg"
   } else {
     var teamIconPath = "images/team_icons_orig/" + team_code + ".png"
